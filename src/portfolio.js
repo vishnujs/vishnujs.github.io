@@ -49,15 +49,14 @@ const socialMediaLinks = {
 
 const skillsSection = {
   title: "What I do",
-  subTitle: "ENTHUSIASTIC FULL STACK DEVELOPER WHO WANTS TO EXPLORE EVERY TECH STACK",
+  subTitle:
+    "ENTHUSIASTIC FULL STACK DEVELOPER WHO WANTS TO EXPLORE EVERY TECH STACK",
   skills: [
     emoji(
       "⚡ Develop highly interactive Back end / Front end user interfaces for your highly scalable and performant applications"
     ),
     emoji("⚡ Develop highly efficient and scalable backend microservices"),
-    emoji(
-      "⚡ Integration of third party services such as AWS / GCP / Azure"
-    )
+    emoji("⚡ Integration of third party services such as AWS / GCP / Azure")
   ],
 
   /* Make Sure to include correct Font Awesome Classname to view your icon
@@ -111,8 +110,7 @@ https://fontawesome.com/icons?d=gallery */
     {
       skillName: "docker",
       fontAwesomeClassname: "fab fa-docker"
-    },
-
+    }
   ],
   display: true // Set false to hide this section, defaults to true
 };
@@ -130,13 +128,13 @@ const educationInfo = {
       desc: "Completed advanced coursework in computer science, strengthening expertise in core and emerging technologies",
       descBullets: [
         "Specialized in Natural Language Processing (NLP) and Machine Learning (ML)",
-        "Thesis: \"Sentiment Analysis on Social Media Tweets Using NLP Techniques\"",
+        'Thesis: "Sentiment Analysis on Social Media Tweets Using NLP Techniques"',
         "Developed and implemented advanced ML algorithms for analyzing tweet sentiments",
         "Gained in-depth knowledge of text preprocessing, feature extraction, and classification methods in NLP",
         "Demonstrated proficiency in applying theoretical concepts to real-world data analysis challenges",
         "This educational experience has significantly enhanced my understanding of complex computer science concepts and provided hands-on experience with cutting-edge NLP and ML technologies, directly applicable to modern software engineering challenges."
       ]
-    }/* ,
+    } /* ,
     {
       schoolName: "Stanford University",
       logo: require("./assets/images/stanfordLogo.png"),
@@ -181,7 +179,7 @@ const workExperiences = {
       date: "December 2022 – September 2024",
       desc: "",
       descBullets: [
-        "Architected and led implementation of mission-critical Payment and Billing systems, driving \$100M annual revenue through high-volume solutions processing 39 billion transactions monthly",
+        "Architected and led implementation of mission-critical Payment and Billing systems, driving $100M annual revenue through high-volume solutions processing 39 billion transactions monthly",
         "Contributed to the entire software development lifecycle, from requirements gathering to maintenance.",
         "Successfully migrated 10+ microservices that was using RabbitMQ for interservice communication to amazon SQS",
         "Successfully migrated 10+ microservices to enable SSL for tools like Kafka, Elasticsearch to upgrade the security.",
@@ -191,8 +189,8 @@ const workExperiences = {
         "Designed and developed python application that shows dashboard metrics by connecting with Elasticsearch server and analysing the logs.",
         "Developed and maintained scala applications that can be deployed in Kubernetes environments for data loading applications to MinioDB which is capable of handling billions of data",
         "Maintained scala application that integrates with spark jobs for processing and loading data from kinesis streams",
-        "Migrating the scala application to Cloud services, had challenges with huge data that required extensive memory. This was fixed by analysing the performance of the application and based on the deductions by analysing the heap memory successfully upgraded to a highly memory conservative multi-threaded application.",
-      ] 
+        "Migrating the scala application to Cloud services, had challenges with huge data that required extensive memory. This was fixed by analysing the performance of the application and based on the deductions by analysing the heap memory successfully upgraded to a highly memory conservative multi-threaded application."
+      ]
     },
     {
       role: "Full Stack Software Engineer",
@@ -200,7 +198,7 @@ const workExperiences = {
       companylogo: require("./assets/images/ssticon.PNG"),
       date: "March 2022 – Present",
       desc: "",
-      descBullets:[
+      descBullets: [
         "Designed and developed RESTful web services using JSON representation.",
         "Utilized HTML/HTML5, CSS/CSS3, and Angular for web page development and debugging.",
         "Coded business components using Java features like multithreading, exception handling, collections, generics, JDBC, lambda, and streams.",
@@ -214,7 +212,7 @@ const workExperiences = {
       companylogo: require("./assets/images/Oracle-Logo.png"),
       date: "September 2021 – March 2022",
       desc: "",
-      descBullets:[
+      descBullets: [
         "Leveraged Spring IOC, AOP, MVC, and Boot for application development",
         "Utilized Kafka for asynchronous communication and integration of services",
         "Worked on object storage features for data storage and retrieval in OCI",
@@ -233,7 +231,7 @@ const workExperiences = {
       companylogo: require("./assets/images/QBurstLogo.png"),
       date: "April 2021 – August 2021",
       desc: "",
-      descBullets:[
+      descBullets: [
         "Implemented multithreading and concurrency for tasks like email generation",
         "Developed the persistence layer using Hibernate",
         "Utilized microservices to modernize a monolithic application",
@@ -254,7 +252,7 @@ const workExperiences = {
       companylogo: require("./assets/images/SuntecLogo.png"),
       date: "August 2017 – April 2021",
       desc: "",
-      descBullets:[
+      descBullets: [
         "Worked on high-level and low-level system design, planning, estimation, implementation and testing and worked from scratch of billing product to delivery",
         "Created the Class diagrams, Flow diagrams, while using the UML to capture internal architectural diagrams as part of creating documentation",
         "Designed and developed business components using Spring Boot, Spring Dependency Injection (Core), Spring AOP and Spring Annotations using Java 8 including features like lambda, streams, multi-threading etc",
@@ -270,7 +268,7 @@ const workExperiences = {
         "Involved in unit testing and system testing and responsible for preparing test scripts for the system testing",
         "Involves in Sprint planning for the estimation of efforts for user stories and bugs",
         "Worked with UI team for integration and maintenance activities on creating a platform based on Angular",
-        "Worked with an internal team to create a chatbot by parsing internal documents and make a model using google-bert that model and data was persisted in the Hadoop cluster",
+        "Worked with an internal team to create a chatbot by parsing internal documents and make a model using google-bert that model and data was persisted in the Hadoop cluster"
       ]
     }
   ]
@@ -328,8 +326,7 @@ const achievementSection = {
   achievementsCards: [
     {
       title: "Software Architecture Case Studies",
-      subtitle:
-        "",
+      subtitle: "",
       image: require("./assets/images/Udemy-Logo.png"),
       imageAlt: "Google Code-In Logo",
       footerLink: [
@@ -419,9 +416,7 @@ const podcastSection = {
   subtitle: "I LOVE TO TALK ABOUT MYSELF AND TECHNOLOGY",
 
   // Please Provide with Your Podcast embeded Link
-  podcast: [
-    ""
-  ],
+  podcast: [""],
   display: false // Set false to hide this section, defaults to true
 };
 
