@@ -121,7 +121,7 @@ const educationInfo = {
   display: true, // Set false to hide this section, defaults to true
   schools: [
     {
-      schoolName: "ABJ Abdul Abdul Kalam Technological University",
+      schoolName: "APJ Abdul Kalam Technological University",
       logo: require("./assets/images/ktuLogo.png"),
       subHeader: "Master of Science in Computer Science",
       duration: "June 2015 - June 2017",
