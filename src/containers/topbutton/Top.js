@@ -6,7 +6,9 @@ export default function Top() {
 
   const onScroll = useCallback(() => {
     const top =
-      window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop;
     setIsVisible(top > 20);
   }, []);
 

@@ -3,13 +3,16 @@
 This file summarizes the security and maintainability review performed on this repository and records the remediation changes that were implemented.
 
 ## Repository snapshot
+
 - **Type**: Create React App (CRA) portfolio site
 - **Primary config/content**: `src/portfolio.js`
 - **Build-time data generation**: `fetch.js` writes `public/profile.json` (GitHub GraphQL response) when `USE_GITHUB_DATA=true`
 - **Runtime data usage**: client fetches `/profile.json` and optionally `/blogs.json`
 
 ## Threat model (practical)
+
 This is a public static portfolio site, so the main security goals are:
+
 - Prevent **XSS** (especially through embeds, future dynamic content, or DOM APIs)
 - Prevent **reverse tabnabbing** and unsafe external navigation
 - Avoid accidental **secret leakage** (GitHub token during build)
@@ -18,6 +21,7 @@ This is a public static portfolio site, so the main security goals are:
 ## Findings (pre-remediation)
 
 ### High risk patterns
+
 1. **Unsafe DOM mutation using `innerHTML`**
    - `src/containers/twitter-embed/twitter.js`
    - Imperatively writing to `element.innerHTML` bypassed React and is a common XSS footgun.
@@ -31,10 +35,11 @@ This is a public static portfolio site, so the main security goals are:
    - Also `_blank` anchor support in `src/components/button/Button.js` lacked `rel`.
 
 3. **Ambiguous secret naming & GraphQL string interpolation**
-   - `fetch.js` used `REACT_APP_GITHUB_TOKEN` which is conventionally *client-exposed* in CRA.
+   - `fetch.js` used `REACT_APP_GITHUB_TOKEN` which is conventionally _client-exposed_ in CRA.
    - Username was interpolated into the query string.
 
 ### Maintainability / correctness issues
+
 1. **String booleans in config**
    - `src/portfolio.js` used values like `"true"` / `"false"`.
    - Code compared against string literals throughout the app.
@@ -54,11 +59,13 @@ This is a public static portfolio site, so the main security goals are:
 ## Remediations implemented
 
 ### A) XSS surface reduction (removed `innerHTML` usage)
+
 - **File**: `src/containers/twitter-embed/twitter.js`
   - Replaced `innerHTML` manipulation with React state.
   - Implemented a timeout-based fallback UI when the Twitter iframe doesn’t load (common with privacy settings).
 
 ### B) Safe external navigation + URL validation
+
 - **File**: `src/utils.js`
   - Added:
     - `sanitizeUrl(rawUrl, allowedProtocols)` – blocks invalid URLs and disallowed protocols (e.g. `javascript:`).
@@ -75,6 +82,7 @@ This is a public static portfolio site, so the main security goals are:
   - Sanitizes `href` before rendering.
 
 ### C) Normalize config booleans + remove runtime mutations
+
 - **File**: `src/portfolio.js`
   - Converted to booleans:
     - `openSource.showGithubProfile: false`
@@ -93,12 +101,14 @@ This is a public static portfolio site, so the main security goals are:
   - Uses derived `hireableText`.
 
 ### D) DOM-event hygiene
+
 - **File**: `src/containers/topbutton/Top.js`
   - Replaced `window.onscroll`/`window.onload` with `addEventListener` + cleanup.
   - Eliminated `getElementById` style toggling in favor of React state.
   - Added smooth scrolling.
 
 ### E) Build-time GitHub fetch hardening
+
 - **File**: `fetch.js`
   - Preferred secret name: `GITHUB_TOKEN` (fallback to `REACT_APP_GITHUB_TOKEN` for backward compatibility).
   - Validates token when `USE_GITHUB_DATA=true`.
@@ -108,6 +118,7 @@ This is a public static portfolio site, so the main security goals are:
   - Updated to document `GITHUB_TOKEN`.
 
 ### F) Production-friendly Dockerfile
+
 - **File**: `Dockerfile`
   - Replaced with multi-stage build:
     - Build: `node:20-alpine`, `npm ci`, `npm run build`
@@ -115,6 +126,7 @@ This is a public static portfolio site, so the main security goals are:
   - Exposes port 80.
 
 ### G) Test stability fixes discovered during verification
+
 - **File**: `src/components/experienceCard/ExperienceCard.js`
   - `colorthief` could require native `sharp` in node/Jest; switched to dynamic import.
 
@@ -125,6 +137,7 @@ This is a public static portfolio site, so the main security goals are:
   - Removed unused imports flagged by eslint.
 
 ### H) Experience card expand/collapse UX + scroll fixes
+
 - **Issue**: expanding an experience card showed a large blank pane and the details text rendered outside the card border.
 - **Files**:
   - `src/components/experienceCard/ExperienceCard.scss`
@@ -141,12 +154,14 @@ This is a public static portfolio site, so the main security goals are:
     - Stopped click/key events inside the details pane from bubbling to the card container, so users can scroll/select/copy text without collapsing the card.
 
 ## Verification
+
 - `npm test -- --watchAll=false` ✅ passes
 - `npm run build` ✅ passes
 - `npm audit` ⚠️ **blocked** because current npm registry does not support audit endpoints.
   - Registry detected: `https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz`
 
 ## Known follow-ups (recommended)
+
 1. **Dependency modernization**
    - React 16.x and Enzyme are legacy; consider migrating to React 18+ and React Testing Library.
 

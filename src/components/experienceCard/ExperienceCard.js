@@ -56,8 +56,12 @@ export default function ExperienceCard({
           loading="lazy"
         />
 
-        <h5 className={`experience-card-company ${textClass}`}>{cardInfo.company}</h5>
-        <div className={`experience-card-tenure ${textClass}`}>{cardInfo.date}</div>
+        <h5 className={`experience-card-company ${textClass}`}>
+          {cardInfo.company}
+        </h5>
+        <div className={`experience-card-tenure ${textClass}`}>
+          {cardInfo.date}
+        </div>
 
         <div className={`experience-card-cta ${textClass}`}>
           {isExpanded ? "Hide details" : "View details"}
@@ -76,7 +80,9 @@ export default function ExperienceCard({
       >
         <h5 className={`experience-card-role ${textClass}`}>{cardInfo.role}</h5>
         {cardInfo.desc ? (
-          <p className={`subTitle experience-card-desc ${textClass}`}>{cardInfo.desc}</p>
+          <p className={`subTitle experience-card-desc ${textClass}`}>
+            {cardInfo.desc}
+          </p>
         ) : null}
         {cardInfo.descBullets && cardInfo.descBullets.length ? (
           <ul className="experience-card-bullets">

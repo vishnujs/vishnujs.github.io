@@ -26,8 +26,8 @@ const Main = () => {
   // even if present it may return a falsy value depending on polyfills.
   const prefersDark = Boolean(
     typeof window !== "undefined" &&
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-color-scheme: dark)")?.matches
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-color-scheme: dark)")?.matches
   );
 
   const [isDark, setIsDark] = useLocalStorage("isDark", prefersDark);

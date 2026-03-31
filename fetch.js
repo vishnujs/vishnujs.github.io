@@ -4,7 +4,8 @@ require("dotenv").config();
 
 // Prefer a non-CRA-prefixed env var for secrets.
 // Keep backward compatibility for existing setups.
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.REACT_APP_GITHUB_TOKEN;
+const GITHUB_TOKEN =
+  process.env.GITHUB_TOKEN || process.env.REACT_APP_GITHUB_TOKEN;
 const GITHUB_USERNAME = process.env.GITHUB_USERNAME;
 const USE_GITHUB_DATA = (process.env.USE_GITHUB_DATA || "false").toLowerCase();
 const MEDIUM_USERNAME = process.env.MEDIUM_USERNAME;

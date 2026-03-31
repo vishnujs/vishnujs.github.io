@@ -4,8 +4,8 @@ import Contact from "../contact/Contact";
 import Loading from "../loading/Loading";
 
 const renderLoader = () => <Loading />;
-const GithubProfileCard = lazy(() =>
-  import("../../components/githubProfileCard/GithubProfileCard")
+const GithubProfileCard = lazy(
+  () => import("../../components/githubProfileCard/GithubProfileCard")
 );
 export default function Profile() {
   const [prof, setProf] = useState(null);
@@ -20,7 +20,9 @@ export default function Profile() {
     fetch("/profile.json")
       .then(result => {
         if (!result.ok) {
-          throw new Error(`Failed to load /profile.json (HTTP ${result.status})`);
+          throw new Error(
+            `Failed to load /profile.json (HTTP ${result.status})`
+          );
         }
         return result.json();
       })

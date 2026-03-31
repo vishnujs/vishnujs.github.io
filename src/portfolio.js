@@ -179,12 +179,12 @@ const workExperiences = {
       date: "May 2024 – Present",
       desc: "",
       descBullets: [
-"Worked across a hybrid Java/platform engineering stack supporting build, packaging, OCI provisioning, and runtime operations. Contributed as both a software developer and DevOps engineer by building Java/node components, maintaining Ant/Maven packaging flows, tracing and improving OCI-native provisioning/update scripts, and supporting operational health through synthetic validation, runtime config generation, service orchestration, and monitoring endpoints deployed in 70+ regions.",
-"Assisted in identifying and resolving bugs, as well as deployment-related issues in cloud-based monitoring and testing workflows.",
-"Collaborated with senior engineers to support continuous and on-demand testing processes after system updates and maintenance.",
-"Helped integrate automated health checks with platform control systems for improved operational visibility.",
-"Contributed and worked as part of making AI integration to the product for both customer facing interface and in development of next generation agent synthetic check making it AI ready."
-]
+        "Worked across a hybrid Java/platform engineering stack supporting build, packaging, OCI provisioning, and runtime operations. Contributed as both a software developer and DevOps engineer by building Java/node components, maintaining Ant/Maven packaging flows, tracing and improving OCI-native provisioning/update scripts, and supporting operational health through synthetic validation, runtime config generation, service orchestration, and monitoring endpoints deployed in 70+ regions.",
+        "Assisted in identifying and resolving bugs, as well as deployment-related issues in cloud-based monitoring and testing workflows.",
+        "Collaborated with senior engineers to support continuous and on-demand testing processes after system updates and maintenance.",
+        "Helped integrate automated health checks with platform control systems for improved operational visibility.",
+        "Contributed and worked as part of making AI integration to the product for both customer facing interface and in development of next generation agent synthetic check making it AI ready."
+      ]
     },
     {
       role: "Java Developer 3",
@@ -385,7 +385,8 @@ const achievementSection = {
     },
     {
       title: "OCI 2025 AI Foundations OCA",
-      subtitle: "Oracle Cloud Infrastructure (OCI) AI Foundations certification.",
+      subtitle:
+        "Oracle Cloud Infrastructure (OCI) AI Foundations certification.",
       image: require("./assets/images/Oracle-Logo.png"),
       imageAlt: "Oracle Cloud Infrastructure",
       footerLink: []
