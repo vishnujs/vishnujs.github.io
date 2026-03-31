@@ -23,10 +23,12 @@ This is a public static portfolio site, so the main security goals are:
 ### High risk patterns
 
 1. **Unsafe DOM mutation using `innerHTML`**
+
    - `src/containers/twitter-embed/twitter.js`
    - Imperatively writing to `element.innerHTML` bypassed React and is a common XSS footgun.
 
 2. **Reverse tabnabbing risk**
+
    - `window.open(url, "_blank")` without `noopener/noreferrer` in:
      - `src/components/achievementCard/AchievementCard.js`
      - `src/components/blogCard/BlogCard.js`
@@ -41,15 +43,18 @@ This is a public static portfolio site, so the main security goals are:
 ### Maintainability / correctness issues
 
 1. **String booleans in config**
+
    - `src/portfolio.js` used values like `"true"` / `"false"`.
    - Code compared against string literals throughout the app.
 
 2. **Mutation of imported config objects and props**
+
    - `src/containers/profile/Profile.js` mutated `openSource.showGithubProfile` at runtime.
    - `src/containers/blogs/Blogs.js` mutated `blogSection.displayMediumBlogs` at runtime.
    - `src/components/githubProfileCard/GithubProfileCard.js` mutated `prof.hireable`.
 
 3. **Imperative DOM access / global window hooks**
+
    - `src/containers/topbutton/Top.js` used `window.onscroll/window.onload` and `getElementById`.
 
 4. **Dockerfile was dev-oriented & non-reproducible**
@@ -67,11 +72,13 @@ This is a public static portfolio site, so the main security goals are:
 ### B) Safe external navigation + URL validation
 
 - **File**: `src/utils.js`
+
   - Added:
     - `sanitizeUrl(rawUrl, allowedProtocols)` – blocks invalid URLs and disallowed protocols (e.g. `javascript:`).
     - `openExternalLink(rawUrl, name)` – opens with `noopener,noreferrer` and nulls `opener`.
 
 - Updated components to use `openExternalLink`:
+
   - `src/components/achievementCard/AchievementCard.js`
   - `src/components/blogCard/BlogCard.js`
   - `src/components/githubRepoCard/GithubRepoCard.js`
@@ -84,15 +91,18 @@ This is a public static portfolio site, so the main security goals are:
 ### C) Normalize config booleans + remove runtime mutations
 
 - **File**: `src/portfolio.js`
+
   - Converted to booleans:
     - `openSource.showGithubProfile: false`
     - `blogSection.displayMediumBlogs: true`
 
 - **File**: `src/containers/profile/Profile.js`
+
   - Removed mutation of `openSource`.
   - Uses component state (`showGithubProfile`) and robust fetch error handling.
 
 - **File**: `src/containers/blogs/Blogs.js`
+
   - Removed mutation of `blogSection`.
   - Uses `mediumError` state for fallbacks.
 
@@ -110,6 +120,7 @@ This is a public static portfolio site, so the main security goals are:
 ### E) Build-time GitHub fetch hardening
 
 - **File**: `fetch.js`
+
   - Preferred secret name: `GITHUB_TOKEN` (fallback to `REACT_APP_GITHUB_TOKEN` for backward compatibility).
   - Validates token when `USE_GITHUB_DATA=true`.
   - Uses GraphQL variables instead of username interpolation.
@@ -128,9 +139,11 @@ This is a public static portfolio site, so the main security goals are:
 ### G) Test stability fixes discovered during verification
 
 - **File**: `src/components/experienceCard/ExperienceCard.js`
+
   - `colorthief` could require native `sharp` in node/Jest; switched to dynamic import.
 
 - **File**: `src/containers/Main.js`
+
   - Guarded `window.matchMedia` usage to work under Jest/jsdom.
 
 - **File**: `src/components/footer/Footer.js`
@@ -163,15 +176,18 @@ This is a public static portfolio site, so the main security goals are:
 ## Known follow-ups (recommended)
 
 1. **Dependency modernization**
+
    - React 16.x and Enzyme are legacy; consider migrating to React 18+ and React Testing Library.
 
 2. **Run audit using a registry that supports it**
+
    - Temporarily:
      - `npm config set registry https://registry.npmjs.org/`
      - `npm audit`
    - Then revert if your environment requires the internal proxy.
 
 3. **Content Security Policy (CSP) and security headers**
+
    - For GitHub Pages you can’t set response headers directly, but you can:
      - reduce third-party scripts
      - self-host assets where possible
