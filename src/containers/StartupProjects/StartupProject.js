@@ -3,14 +3,11 @@ import "./StartupProjects.scss";
 import {bigProjects} from "../../portfolio";
 import {Fade} from "react-reveal";
 import StyleContext from "../../contexts/StyleContext";
+import {openExternalLink} from "../../utils";
 
 export default function StartupProject() {
   function openUrlInNewTab(url) {
-    if (!url) {
-      return;
-    }
-    var win = window.open(url, "_blank");
-    win.focus();
+    openExternalLink(url, "project link");
   }
 
   const {isDark} = useContext(StyleContext);

@@ -1,15 +1,13 @@
 import React from "react";
 import "./AchievementCard.scss";
+import {openExternalLink} from "../../utils";
 
 export default function AchievementCard({cardInfo, isDark}) {
   function openUrlInNewTab(url, name) {
-    if (!url) {
-      console.log(`URL for ${name} not found`);
-      return;
-    }
-    var win = window.open(url, "_blank");
-    win.focus();
+    openExternalLink(url, name);
   }
+
+  const footerLinks = Array.isArray(cardInfo.footer) ? cardInfo.footer : [];
 
   return (
     <div className={isDark ? "dark-mode certificate-card" : "certificate-card"}>
@@ -28,21 +26,23 @@ export default function AchievementCard({cardInfo, isDark}) {
           {cardInfo.description}
         </p>
       </div>
-      <div className="certificate-card-footer">
-        {cardInfo.footer.map((v, i) => {
-          return (
-            <span
-              key={i}
-              className={
-                isDark ? "dark-mode certificate-tag" : "certificate-tag"
-              }
-              onClick={() => openUrlInNewTab(v.url, v.name)}
-            >
-              {v.name}
-            </span>
-          );
-        })}
-      </div>
+      {footerLinks.length ? (
+        <div className="certificate-card-footer">
+          {footerLinks.map((v, i) => {
+            return (
+              <span
+                key={i}
+                className={
+                  isDark ? "dark-mode certificate-tag" : "certificate-tag"
+                }
+                onClick={() => openUrlInNewTab(v.url, v.name)}
+              >
+                {v.name}
+              </span>
+            );
+          })}
+        </div>
+      ) : null}
     </div>
   );
 }

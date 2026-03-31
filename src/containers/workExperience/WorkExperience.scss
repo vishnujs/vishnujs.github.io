@@ -37,3 +37,20 @@
     text-align: center;
   }
 }
+
+/* Mobile tweaks: ensure cards fit narrow viewports and don't get clipped */
+@media (max-width: 480px) {
+  #experience {
+    /* Prevent anchor jumps from being hidden behind the sticky header */
+    scroll-margin-top: 110px;
+  }
+
+  .experience-container {
+    width: 100%;
+    padding: 20px 0;
+  }
+
+  .experience-cards-div {
+    grid-template-columns: 1fr;
+  }
+}

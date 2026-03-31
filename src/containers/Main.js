@@ -22,8 +22,15 @@ import {useLocalStorage} from "../hooks/useLocalStorage";
 import "./Main.scss";
 
 const Main = () => {
-  const darkPref = window.matchMedia("(prefers-color-scheme: dark)");
-  const [isDark, setIsDark] = useLocalStorage("isDark", darkPref.matches);
+  // `matchMedia` is not available in some environments (e.g., Jest/jsdom), and
+  // even if present it may return a falsy value depending on polyfills.
+  const prefersDark = Boolean(
+    typeof window !== "undefined" &&
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-color-scheme: dark)")?.matches
+  );
+
+  const [isDark, setIsDark] = useLocalStorage("isDark", prefersDark);
   const [isShowingSplashAnimation, setIsShowingSplashAnimation] =
     useState(true);
 

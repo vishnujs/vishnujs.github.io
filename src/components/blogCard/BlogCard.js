@@ -1,14 +1,10 @@
 import React from "react";
 import "./BlogCard.scss";
+import {openExternalLink} from "../../utils";
 
 export default function BlogCard({blog, isDark}) {
   function openUrlInNewTab(url, name) {
-    if (!url) {
-      console.log(`URL for ${name} not found`);
-      return;
-    }
-    var win = window.open(url, "_blank");
-    win.focus();
+    openExternalLink(url, name);
   }
 
   return (

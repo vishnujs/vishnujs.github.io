@@ -7,9 +7,8 @@ import StyleContext from "../../contexts/StyleContext";
 export default function Blogs() {
   const {isDark} = useContext(StyleContext);
   const [mediumBlogs, setMediumBlogs] = useState([]);
-  function setMediumBlogsFunction(array) {
-    setMediumBlogs(array);
-  }
+  const [mediumError, setMediumError] = useState(false);
+  const useMediumBlogs = Boolean(blogSection.displayMediumBlogs);
   //Medium API returns blogs' content in HTML format. Below function extracts blogs' text content within paragraph tags
   function extractTextContent(html) {
     return typeof html === "string"
@@ -19,31 +18,37 @@ export default function Blogs() {
           .filter(el => el.trim().length > 0)
           .map(el => el.replace(/<\/?[^>]+(>|$)/g, "").trim())
           .join(" ")
-      : NaN;
+      : "";
   }
   useEffect(() => {
-    if (blogSection.displayMediumBlogs === "true") {
-      const getProfileData = () => {
-        fetch("/blogs.json")
-          .then(result => {
-            if (result.ok) {
-              return result.json();
-            }
-          })
-          .then(response => {
-            setMediumBlogsFunction(response.items);
-          })
-          .catch(function (error) {
-            console.error(
-              `${error} (because of this error Blogs section could not be displayed. Blogs section has reverted to default)`
-            );
-            setMediumBlogsFunction("Error");
-            blogSection.displayMediumBlogs = "false";
-          });
-      };
-      getProfileData();
-    }
-  }, []);
+    if (!useMediumBlogs) return;
+    let cancelled = false;
+
+    fetch("/blogs.json")
+      .then(result => {
+        if (!result.ok) {
+          throw new Error(`Failed to load /blogs.json (HTTP ${result.status})`);
+        }
+        return result.json();
+      })
+      .then(response => {
+        if (cancelled) return;
+        setMediumBlogs(Array.isArray(response?.items) ? response.items : []);
+      })
+      .catch(error => {
+        // eslint-disable-next-line no-console
+        console.error(
+          `${error} (because of this error Blogs section could not be displayed. Blogs section has reverted to default)`
+        );
+        if (cancelled) return;
+        setMediumError(true);
+        setMediumBlogs([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [useMediumBlogs]);
   if (!blogSection.display) {
     return null;
   }
@@ -62,8 +67,7 @@ export default function Blogs() {
         </div>
         <div className="blog-main-div">
           <div className="blog-text-div">
-            {blogSection.displayMediumBlogs !== "true" ||
-            mediumBlogs === "Error"
+            {!useMediumBlogs || mediumError || mediumBlogs.length === 0
               ? blogSection.blogs.map((blog, i) => {
                   return (
                     <BlogCard

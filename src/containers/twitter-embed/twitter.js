@@ -1,4 +1,4 @@
-import React, {Suspense, useContext} from "react";
+import React, {Suspense, useContext, useEffect, useMemo, useRef, useState} from "react";
 import "./twitter.scss";
 import Loading from "../loading/Loading";
 import {TwitterTimelineEmbed} from "react-twitter-embed";
@@ -6,20 +6,48 @@ import {twitterDetails} from "../../portfolio";
 import StyleContext from "../../contexts/StyleContext";
 
 const renderLoader = () => <Loading />;
-const cantDisplayError =
-  "<div className='centerContent'><h2>Can't load? Check privacy protection settings</h2></div>";
+const FALLBACK_TIMEOUT_MS = 10000;
 
-function timeOut() {
-  setTimeout(function () {
-    if (!document.getElementById("twitter").innerHTML.includes("iframe")) {
-      document.getElementById("twitter").innerHTML = cantDisplayError;
-    }
-  }, 10000);
+function useScreenWidth() {
+  const [width, setWidth] = useState(() => {
+    // Guard in case of tests/non-browser env.
+    if (typeof window === "undefined") return 600;
+    return window.innerWidth || window.screen?.width || 600;
+  });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handler = () => setWidth(window.innerWidth || window.screen?.width);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+
+  return width;
 }
-var widthScreen = window.screen.width;
 
 export default function Twitter() {
   const {isDark} = useContext(StyleContext);
+  const widthScreen = useScreenWidth();
+  const [showFallback, setShowFallback] = useState(false);
+  const fallbackTimerRef = useRef(null);
+
+  // If the embed never loads (often due to privacy protection settings),
+  // show a React-rendered fallback instead of mutating DOM via `innerHTML`.
+  useEffect(() => {
+    if (!twitterDetails.display) return;
+    fallbackTimerRef.current = setTimeout(
+      () => setShowFallback(true),
+      FALLBACK_TIMEOUT_MS
+    );
+    return () => {
+      if (fallbackTimerRef.current) clearTimeout(fallbackTimerRef.current);
+    };
+  }, []);
+
+  const embedOptions = useMemo(
+    () => ({height: 400, width: widthScreen}),
+    [widthScreen]
+  );
 
   if (!twitterDetails.display) {
     return null;
@@ -32,18 +60,30 @@ export default function Twitter() {
       <Suspense fallback={renderLoader()}>
         <div className="tw-main-div" id="twitter">
           <div className="centerContent">
-            <TwitterTimelineEmbed
-              sourceType="profile"
-              screenName={twitterDetails.userName}
-              options={{height: 400, width: {widthScreen}}}
-              placeholder={renderLoader()}
-              autoHeight={false}
-              borderColor="#fff"
-              key={isDark ? "1" : "2"}
-              theme={isDark ? "dark" : "light"}
-              noFooter={true}
-              onload={timeOut()}
-            />
+            {showFallback ? (
+              <div className="centerContent">
+                <h2>Can't load? Check privacy protection settings</h2>
+              </div>
+            ) : (
+              <TwitterTimelineEmbed
+                sourceType="profile"
+                screenName={twitterDetails.userName}
+                options={embedOptions}
+                placeholder={renderLoader()}
+                autoHeight={false}
+                borderColor="#fff"
+                key={isDark ? "1" : "2"}
+                theme={isDark ? "dark" : "light"}
+                noFooter={true}
+                // Mark as loaded (so fallback doesn't appear) if the library calls onLoad.
+                onLoad={() => {
+                  if (fallbackTimerRef.current) {
+                    clearTimeout(fallbackTimerRef.current);
+                  }
+                  setShowFallback(false);
+                }}
+              />
+            )}
           </div>
         </div>
       </Suspense>

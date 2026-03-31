@@ -1,29 +1,24 @@
-# This file is the main docker file configurations
+# Build stage
+FROM node:20-alpine AS build
 
-# Official Node JS runtime as a parent image
-FROM node:20.0-alpine
-
-# Set the working directory to ./app
 WORKDIR /app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package.json ./
+# Install dependencies (reproducible)
+COPY package.json package-lock.json ./
+RUN npm ci
 
-RUN apk add --no-cache git
+# Copy source and build
+COPY . .
+RUN npm run build
 
-# Install any needed packages
-RUN npm install
+# Runtime stage (static file server)
+FROM nginx:1.27-alpine
 
-# Audit fix npm packages
-RUN npm audit fix
+# Copy build output
+COPY --from=build /app/build /usr/share/nginx/html
 
-# Bundle app source
-COPY . /app
+EXPOSE 80
 
-# Make port 3000 available to the world outside this container
-EXPOSE 3000
-
-# Run app.js when the container launches
-CMD ["npm", "start"]
+# Basic SPA routing support (optional): for CRA this isn't strictly needed unless
+# you use client-side routing.
+CMD ["nginx", "-g", "daemon off;"]

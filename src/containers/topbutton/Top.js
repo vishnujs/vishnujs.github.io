@@ -1,31 +1,32 @@
-import React from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import "./Top.scss";
 
 export default function Top() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const onScroll = useCallback(() => {
+    const top =
+      window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+    setIsVisible(top > 20);
+  }, []);
+
+  useEffect(() => {
+    onScroll();
+    window.addEventListener("scroll", onScroll, {passive: true});
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [onScroll]);
+
   function TopEvent() {
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    window.scrollTo({top: 0, behavior: "smooth"});
   }
-  // When the user scrolls down 20px from the top of the document, show the button
-  function scrollFunction() {
-    if (
-      document.body.scrollTop > 20 ||
-      document.documentElement.scrollTop > 20
-    ) {
-      document.getElementById("topButton").style.visibility = "visible";
-    } else {
-      document.getElementById("topButton").style.visibility = "hidden";
-    }
-  }
-  window.onscroll = function () {
-    scrollFunction();
-  };
-  window.onload = function () {
-    scrollFunction();
-  }; //To make sure that this button is not visible at starting.
-  // When the user clicks on the button, scroll to the top of the document
+
   return (
-    <button onClick={TopEvent} id="topButton" title="Go to top">
+    <button
+      onClick={TopEvent}
+      id="topButton"
+      title="Go to top"
+      style={{visibility: isVisible ? "visible" : "hidden"}}
+    >
       <i className="fas fa-hand-point-up" aria-hidden="true"></i>
     </button>
   );

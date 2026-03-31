@@ -1,16 +1,11 @@
 import React from "react";
 import "./GithubRepoCard.scss";
 import {Fade} from "react-reveal";
-import {formatFileSizeDisplay} from "../../utils";
+import {formatFileSizeDisplay, openExternalLink} from "../../utils";
 
 export default function GithubRepoCard({repo, isDark}) {
   function openUrlInNewTab(url, name) {
-    if (!url) {
-      console.log(`URL in ${name} is undefined`);
-      return;
-    }
-    var win = window.open(url, "_blank");
-    win.focus();
+    openExternalLink(url, name);
   }
 
   return (

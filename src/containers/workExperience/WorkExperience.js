@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import "./WorkExperience.scss";
 import ExperienceCard from "../../components/experienceCard/ExperienceCard";
 import {workExperiences} from "../../portfolio";
@@ -7,6 +7,11 @@ import StyleContext from "../../contexts/StyleContext";
 
 export default function WorkExperience() {
   const {isDark} = useContext(StyleContext);
+  const [expandedIndex, setExpandedIndex] = useState(null);
+
+  function handleToggle(index) {
+    setExpandedIndex(prev => (prev === index ? null : index));
+  }
   if (workExperiences.display) {
     return (
       <div id="experience">
@@ -20,6 +25,8 @@ export default function WorkExperience() {
                     <ExperienceCard
                       key={i}
                       isDark={isDark}
+                      isExpanded={expandedIndex === i}
+                      onToggle={() => handleToggle(i)}
                       cardInfo={{
                         company: card.company,
                         desc: card.desc,
