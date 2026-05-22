@@ -36,10 +36,10 @@ const socialMediaLinks = {
   github: "https://github.com/vishnujs",
   linkedin: "https://www.linkedin.com/in/vishnu-j-s/",
   gmail: "jsvishnujs@gmail.com",
-  // gitlab: "https://gitlab.com/saadpasta",
+  // gitlab: "https://gitlab.com/vishnujs",
   facebook: "https://www.facebook.com/jsvishnujs",
-  // medium: "https://medium.com/@saadpasta",
-  stackoverflow: "https://stackoverflow.com/users/10422806/saad-pasta",
+  // medium: "https://medium.com/@vishnujs",
+  // stackoverflow: "https://stackoverflow.com/users/10422806/saad-pasta",
   // Instagram, Twitter and Kaggle are also supported in the links!
   // To customize icons and social links, tweak src/components/SocialMedia
   display: true // Set true to display this section, defaults to false
@@ -418,7 +418,7 @@ const blogSection = {
         "Do you want to win $200 and Google Assistant Tshirt by creating a Google Assistant Action in less then 30 min?"
     },
     {
-      url: "https://medium.com/@saadpasta/why-react-is-the-best-5a97563f423e",
+      url: "https://medium.com/@vishnujs/why-react-is-the-best-5a97563f423e",
       title: "Why REACT is The Best?",
       description:
         "React is a JavaScript library for building User Interface. It is maintained by Facebook and a community of individual developers and companies."
